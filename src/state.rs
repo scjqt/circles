@@ -98,10 +98,13 @@ impl State {
                     let dist_sq = a.position.distance_squared(b.position);
                     let sum_radii = a.radius + b.radius;
                     if dist_sq < sum_radii * sum_radii {
-                        let midpoint = (a.position + b.position) / 2.;
-                        let offset = (a.position - b.position).normalize() * sum_radii / 2.;
-                        self.circles[i].position = midpoint + offset;
-                        self.circles[j].position = midpoint - offset;
+                        let offset = (a.position - b.position).normalize();
+                        let diff = sum_radii - dist_sq.sqrt();
+                        let a = a.radius * a.radius;
+                        let b = b.radius * b.radius;
+                        let total = a + b;
+                        self.circles[i].position += offset * diff * b / total;
+                        self.circles[j].position -= offset * diff * a / total;
                     }
                 }
             }
