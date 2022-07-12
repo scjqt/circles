@@ -40,7 +40,7 @@ impl State {
 
         let mouse = inputs.mouse_position().as_dvec2();
 
-        if inputs[Clear] {
+        if inputs[Clear] && !inputs.last(Clear) {
             self.circles.clear();
         }
 
